@@ -67,7 +67,12 @@ hourHand.style.transform = `rotate(${hourHandDegrees}deg)`;
 
 ### CSS
 
-* `transform-origin: 100%;` this makes the hands rotate at the RHS end of the hands, default is `50%` which makes it rotate from the centre of the hands., similarly `0%` will make them rotate from LHS end of the hands.
+* ` background-size: cover;` This fits the image in a way that covers the entire window with that image, while some parts of the image might go out of the window.
+
+*  `rem`: The relative unit which multiplies the font-size of body element with the value specified. So if the body font size is 10px, 2rem would equal 20px.
+
+* `transform-origin: 100%;` moves the origin of rotation along x-axis. So `transform-origin: 100%;` would shift the origin to the rightmost end of the element (in our case, hand), default is `50%` which makes it rotate from the centre of the element (hands).Similarly `0%` will make them rotate from LHS end of the element (hands).
+
 * `transition: all 0.05s;`: `all` is keyword for `transition-property`, [further info](https://blog.alexmaccaw.com/css-transitions). The value for `transition-property` can be one of the following:
 
     * A single property name, as in the example:
@@ -84,6 +89,9 @@ hourHand.style.transform = `rotate(${hourHandDegrees}deg)`;
     * The keyword `none`, which indicates that no property will transition.
     * The keyword `all`, which indicates that all properties will transition (the default).
 
+* __Changing Hand Dimensions:__ To understand how the hands are constructed, notice that they have been rotated 90 degrees. Hence they are essentially horizontal lines at `50%` width of `clock`. Tuned the `height`, `width`, `margin` & `top` properties accordingly.
+
 ### JS
 
 * How to get date and time in js.
+* __Correcting the transition:__ at `0s/0m/0h`. Simple way to do it is to create a new class of CSS with `transition: all 0s;` and apply it at every `0s/m/h` and remove it at `1` using JS that way it transitions abruptly at 0 since calcDegrees instead of transitioning gradually at `0.05s`.

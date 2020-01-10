@@ -64,6 +64,28 @@
       transition: all 0.05s;
       transition-timing-function: cubic-bezier(0, 1.32, 1, 2.21);
     }
+
+    .second-hand {
+      height: 3px;
+      width: 45%;
+      margin: 05%;
+      top: 45%;
+    }
+
+    .min-hand{
+      width: 40%;
+      margin: 10%;
+      top: 40%;
+    }
+
+    .hour-hand{
+      height: 7px;
+      width: 50%;
+    }
+
+    .transition {
+      transition: all 0s;
+    }
   </style>
   <script>
     // get the hour, minute & second hands
@@ -75,20 +97,28 @@
     const calcDegrees = (currHandVal, maxHandVal) => {
       return ((currHandVal / maxHandVal) * 360) + 90;
     }
+
     const setDate = () => {
       const now = new Date();
 
       const seconds = now.getSeconds();
       const secondDegrees = calcDegrees(seconds, 60)
+      console.log(seconds, secondDegrees);
       secondHand.style.transform = `rotate(${secondDegrees}deg)`;
+      if (seconds === 0) secondHand.classList.add('transition');
+      if ( seconds === 1) secondHand.classList.remove('transition');
 
       const minutes = now.getMinutes();
       const minuteDegrees = calcDegrees(minutes, 60)
       minuteHand.style.transform = `rotate(${minuteDegrees}deg)`;
+      if (minutes === 0) minuteHand.classList.add('transition');
+      if (minutes === 1) minuteHand.classList.remove('transition');
 
       const hours = now.getHours();
       const hourDegrees = calcDegrees(hours, 12);
       hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+      if (hours === 0) hourHand.classList.add('transition');
+      if (hours === 1) hourHand.classList.remove('transition');
     }
     setInterval(setDate, 1000);
   </script>
