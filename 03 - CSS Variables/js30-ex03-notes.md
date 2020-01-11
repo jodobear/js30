@@ -44,14 +44,23 @@ img {
 
 ## Learnings
 
+### HTML
+
+* `for` property of `<label>` tag binds that label to the `name` property of the element passed as value to it.
+* `<input type='range'>` adds a scroll bar to the page with  `min`, `max` propterties and `value` as default value.
+* `<input type='color'>` adds a color picker to the page with `value` as it's default value.
+
 ### CSS
 
-# Need to add this. Next sesh.
+* `:root` selector for the base HTML element.
 
 * `<h2 style="--base: x">Update CSS Variables with <span class="hl">JS</span></h2>` When you do this it'll override the `--base: color` property that's set to root as it occurs after(inside) root.
 
 ### JS
 
+* `const suffix = this.dataset.sizing || '';` the `|| ''` means return _nothing_ instead of `undefined` since we don't have a suffix for `color`.
+* `document.documentElement` returns the root element.
+* ```document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);``` updates the CSS property of the first arg with the value supplied in the second arg.
 * Interesting difference in function definition syntax:
 ```js
 // legacy
@@ -64,3 +73,4 @@ const handleUpdate = () => {
 }
 ```
 When defined as arrow func, it returns `undefined` even if explicitly returned but, when defined using legacy syntax, returns the `value`.
+* `mousemove` is another event like `transitionend` event in last exercise.
