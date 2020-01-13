@@ -27,7 +27,7 @@
       { first: 'Hanna', last: 'Hammarström', year: 1829, passed: 1909 }
     ];
 
-    const people = ['Beck, Glenn', 'Becker, Carl', 'Beckett, Samuel', 'Beddoes, Mick', 'Beecher, Henry', 'Beethoven, Ludwig', 'Begin, Menachem', 'Belloc, Hilaire', 'Bellow, Saul', 'Benchley, Robert', 'Benenson, Peter', 'Ben-Gurion, David', 'Benjamin, Walter', 'Benn, Tony', 'Bennington, Chester', 'Benson, Leana', 'Bent, Silas', 'Bentsen, Lloyd', 'Berger, Ric', 'Bergman, Ingmar', 'Berio, Luciano', 'Berle, Milton', 'Berlin, Irving', 'Berne, Eric', 'Bernhard, Sandra', 'Berra, Yogi', 'Berry, Halle', 'Berry, Wendell', 'Bethea, Erin', 'Bevan, Aneurin', 'Bevel, Ken', 'Biden, Joseph', 'Bierce, Ambrose', 'Biko, Steve', 'Billings, Josh', 'Biondo, Frank', 'Birrell, Augustine', 'Black, Elk', 'Blair, Robert', 'Blair, Tony', 'Blake, William'];
+    const people = ['Benchley, Robert', 'Beck, Glenn', 'Becker, Carl', 'Beckett, Samuel', 'Beddoes, Mick', 'Beecher, Henry', 'Beethoven, Ludwig', 'Begin, Menachem', 'Belloc, Hilaire', 'Bellow, Saul', 'Benenson, Peter', 'Ben-Gurion, David', 'Benjamin, Walter', 'Benn, Tony', 'Bennington, Chester', 'Benson, Leana', 'Bent, Silas', 'Bentsen, Lloyd', 'Berger, Ric', 'Bergman, Ingmar', 'Berio, Luciano', 'Berle, Milton', 'Berlin, Irving', 'Berne, Eric', 'Bernhard, Sandra', 'Berra, Yogi', 'Berry, Halle', 'Berry, Wendell', 'Bethea, Erin', 'Bevan, Aneurin', 'Bevel, Ken', 'Biden, Joseph', 'Bierce, Ambrose', 'Biko, Steve', 'Billings, Josh', 'Biondo, Frank', 'Birrell, Augustine', 'Black, Elk', 'Blair, Robert', 'Blair, Tony', 'Blake, William'];
 
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
@@ -57,7 +57,7 @@
     // 4. How many years did all the inventors live all together?
     const totalYears = inventors.reduce((acc, currVal) => {
       var yearsLived = currVal.passed - currVal.year;
-      console.log(currVal.first, yearsLived);
+      // console.log(currVal.first, yearsLived);
       return acc + yearsLived;
     }, 0);
     // console.log(totalYears);
@@ -69,19 +69,45 @@
       //alt:
       // return life(a.year, a.passed) > life(b.year, b.passed) ? 1 : -1;
     });
-    console.table(yearsLivedOrdered);
+    // console.table(yearsLivedOrdered);
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
-
+    // this was done in the browser as we worked on extracting info from the page.
+    /*
+    // First we get the element containing all the links
+    const container = document.querySelector('.mw-category');
+    // then we extract the element that contain the links and convert it to an array.
+    const links = Array.from(container.querySelectorAll('a'));
+    // then we extract the text from the links
+    const text = links.map(link => link.textContent);
+    // then we filter for 'de'
+    const de = text.filter(boulevard => boulevard.includes('de'));
+    // we could have done all that in one line, like so;
+    const de = [...document.querySelectorAll('.mw-category a')]
+                  .map(link => link.textContent)
+                  .filter(boulevard => boulevard.includes('de'));
+    */
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    const lastSort = people.sort((a, b) => {
+      const [aLast, aFirst] = a.split(', ');
+      const [bLast, bFirst] = b.split(', ');
+      // console.log(aLast, aFirst);
+      return aLast > bLast ? 1 : -1;
+    })
+    console.table(lastSort);
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
-
+    const count = data.reduce((object, instance) => {
+      if (!object[instance]) object[instance] = 0;
+      object[instance]++;
+      return object;
+    }, {});
+    console.log(count);
   </script>
 </body>
 </html>
