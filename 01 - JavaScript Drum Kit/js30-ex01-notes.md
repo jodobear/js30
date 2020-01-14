@@ -16,21 +16,13 @@ And that's...pretty much all we should need from the HTML & CSS files. We can us
 
 ## Steps:
 
-1. Add an event listener to the entire window object that is listening for a `keydown` event; the function that we will provide as the callback will be defined next. For now, decide on what the function name will be and provide that name as the second argument for our event listener.
-
-2. Create a function with the name that you decided on in step 1.
-    1. The function should accept one parameter, the `event` which the function is going to handle.
-    2. In the body of the function, declare and define two variables that will reference the `div` and `audio` elements that correspond with the keypress which triggered the function (if such elements exist).
-    3. If the key pressed doesn't match one of the keys defined on our page we don't need to proceed any further, but if it does then we can use the variable referencing the div element to add the `playing` class to it, and we can use the variable referencing the audio element to play the audio file.
-
-3. Declare & define a variable which will reference all the HTML elements on our page with a class `key`.
-
-4. Iterate through the HTML elements and add an event listener to each one that will fire on the transitioned event. Provide another function (name of your choice) as the second argument which will be responsible for removing the playing class.
-
-5. Create a function with the name that was used in step 4.
-    1. This function (event handler) will fire when the playing class is added to an element and the transition animation completes. The event provided to the function as an argument will contain a reference to the `TransitionEvent` (or events) with the CSS property's name which was transitioned into.
-    2. The function should only be concerned with the transform property, as this property defines the time the animation will take, and we don't want to remove the class until the transformation is complete.
-    3. If there is an event with a property name `transform`, target the function context (the HTML element to which the event listener was attached) and remove the `playing` class.
+1. Create a function to play sound with the `event` argument. In that;
+  1. Define two variables to select the relevant key press using either `div` or class `.key` as `querySelector` and audio using `tag[prop="event.keyCode"]`.
+  2. Add the `playing` style only to the `key`/`audio` that is encoded.
+  3. play the `audio` and set audio's `currentTime` to `0` before every play so it plays at every `keydown` event.
+2. Add an `eventListener` to the `window` to listen for the `keydown` event and pass the function `playSound`.
+3. Now that we've got the audio working and the `playing` style with yellow border, we need to remove that after we are done playing. For that we get all the keys of the `document` and loop over each key, add an `eventListener` to listen for `transitionend` and pass the `removeTransition` function to it.
+4. For the `removeTransition` function we pass the `event` as it's argument to remove the `playing` style of the element where we applied it, which will be referred to with `this` as `removeTransition` is called by the `eventListener` and called upon the `key`. Note that we only check if the event's `propertyName` is `transform` since, it takes the most time to transform and we want to remove the transition after that's finished.
 
 ## Learnings
 

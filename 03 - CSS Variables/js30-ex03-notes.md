@@ -13,6 +13,7 @@ The purpose of this exercise is to gain experience using CSS3 variables. These a
 * Declare a new style for the `:root` element and declare three variables inside the style definition for `:root` with the same names as the `input` HTML elements. CSS3 variables are declared in the following syntax format:
 ```css
 /* Two hyphens (--) followed by the variable name */
+/* note the variable names are the same as `name` prop of the element */
 :root {
   --base: #ffc600;
   --blur: 10px;
@@ -47,7 +48,7 @@ img {
 ### HTML
 
 * `for` property of `<label>` tag binds that label to the `name` property of the element passed as value to it.
-* `<input type='range'>` adds a scroll bar to the page with  `min`, `max` propterties and `value` as default value.
+* `<input type='range'>` adds a scroll bar to the page with  `min`, `max` properties and `value` as default value.
 * `<input type='color'>` adds a color picker to the page with `value` as it's default value.
 
 ### CSS
@@ -64,13 +65,14 @@ img {
 * Interesting difference in function definition syntax:
 ```js
 // legacy
-function handleUpdate() {
+function handleUpdate(e) {
   console.log(this.value);
 }
 // arrow
-const handleUpdate = () => {
+const handleUpdate = (e) => {
   console.log(this.value);
 }
 ```
-When defined as arrow func, it returns `undefined` even if explicitly returned but, when defined using legacy syntax, returns the `value`.
+When defined as arrow func, it returns `undefined` even if explicitly returned but, when defined using legacy syntax, returns the `value`. This is because `console.log(this.value);` is a statement not an expression. Arrow functions need an expression to implicitly return.
+
 * `mousemove` is another event like `transitionend` event in last exercise.
