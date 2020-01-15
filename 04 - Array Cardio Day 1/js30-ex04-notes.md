@@ -96,6 +96,10 @@ const lastSort = people.sort((cur, next) => {
 })
 ```
 
+While doing the review found out that `aLast - bLast` doesn't return a sorted array but, `aLast > bLast ? 1 : -1` does. Did some research and apparently `sort` doesn't sort strings when used like that you can use `aLast.localeCompare(bLast)` and this is probably what `sort()` invariably calls under the hood. Also, even when comparing numbers, sort converts them to strings. For simple sting or number arrays you can use `array.sort()`.
+
+![JS sort()](./js-sort.png)
+
 ## ex08: `reduce`
 
 Here we got in to exploring the flexibility of `reduce`.
