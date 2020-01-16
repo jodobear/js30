@@ -83,9 +83,48 @@ Update the styling applied to the panel open class so that the selected panel ta
 
 ### CSS
 
-* `display: flex;` default stacking of items is vertical left to right.
-* `flex: 1;`: evenly distribute space between items within the flexbox.
-* `justify-content: center;` aligns content horizontally.
-* `align-items: center;` aligns items vertically.
-* `flex: 1 0 auto;` evenly distributed the container space between the items, similar to `flex: 1;`, but don't know the difference.
-*
+#### `panels`
+* `display: flex;` default stacking of items is vertical left to right and they will size according to the content they have.
+* `flex: 1;`: each of the panel(element) will evenly distribute space between items within the flexbox. I think of it as 1:1.
+
+#### `panel`
+* To get the text (childern of each `panel` which is child of `panels` flexbox) we first make the `panel` a flexbox too; `display: flex;` (so, now we have flexbox nested inside a flexbox).
+* This makes all the children align horizontally from left to right so, we apply, `flex-direction: column;` to align them vertically.
+* Now the text is aligned but, not in center so, we apply `justify-content: center;` which when `flex-direction` is `row`(defalut) will align content horizontally centered else when `column` aligns content vertically.
+* `align-items: center;` aligns items vertically. Implemented by Wes but, i don't think it's required(?)
+
+#### Flex children
+* `.panel > *` syntax to select all the children of the selected node.
+* `flex: 1 0 auto;` evenly distributed the container space between the items, similar to `flex: 1;`, but don't know the difference. In fact, `flex: 1;` itself works, didn't need `flex: 1 0 auto;`
+* At this stage, all the text was aligned to the top margin. To center the text we converted the children into flexboxes too; `dispaly: flex;`
+* Then all the text was aligned to top-left corner so we did the following:
+```css
+display: flex;
+justify-content: center;
+align-items: center;
+```
+which aligned the text to absolute center of eact of the elements and was the same as doing this:
+```css
+display: flex;
+flex-direction: column;
+justify-content: center;
+```
+Here, before applying `align-items: center;` items were centered horizontally at the top margin and this centered them vertically.
+
+#### Getting the Text Off Screen
+
+* `.panel > *:first-child { transform: translateY(+/-100%); }` used this.
+  * `:first-child` pseudo selector for first of the children of the parent slector.
+  * Using the `transform` property, we apply `translateY(%)` which if `+/-50%` depending on which margin it is at, will move the element 50% off screen, while `100%` will move it completely off screen, `+100%` for bottom & `-100%` to take it off the top.
+.panel.open-active > *:first-child { transform: translateY(0%); }
+  * Then we applied a another class `.open-active` to the above line and passed `0%` to both first & last child so that they are back in view, like so; `.panel.open-active > *:first-child { transform: translateY(0%); }`. **NOTE** does it matter `.panel.open-active` no space or `.panel .open-active`(?)
+
+#### Expanding the `panel`
+
+We simple added `flex: 5;` to the `.open` class chained to `.panel` which says, when applied use 5 times the space.
+
+### JS
+ 1. We first got all the individual panels, `.panel` (not `.panels`).
+ 2. Created a function to toggle the `open` class. One thing of note, arrow gave the error `Uncaught TypeError: Cannot read property 'toggle' of undefined at HTMLDivElement.toggleOpen`, normal function worked. Check why or ask on stackoverflow.
+3. After that we want to bring in the text AFTER the transition of expansion of the panel is finished, so, as we did before we listen for `transitionend` event pass it to a new function, check for the event's `propertyName` and toggle our `open-active` class. **NOTE** here for cross browser support, the check was `e.propertyName.includes('flex')` since different browsers name the property differently.
+
