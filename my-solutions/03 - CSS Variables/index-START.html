@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scoped CSS Variables and JS</title>
+</head>
+<body>
+  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+
+  <div class="controls">
+    <label for="spacing">Spacing:</label>
+    <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+
+    <label for="blur">Blur:</label>
+    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+
+    <label for="base">Base Color</label>
+    <input id="base" type="color" name="base" value="#ffc600">
+  </div>
+
+  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+
+  <style>
+    /* styles for css variables. */
+    :root {
+      --base: #ffc600;
+      --spacing: 50px;
+      --blur: 5px;
+    }
+
+    img {
+      background: var(--base);
+      filter: blur(var(--blur));
+      padding: var(--spacing);
+    }
+
+    .hl {
+      color: var(--base);
+    }
+
+    /* misc styles, nothing to do with CSS variables */
+
+    body {
+      text-align: center;
+      background: #193549;
+      color: white;
+      font-family: 'helvetica neue', sans-serif;
+      font-weight: 100;
+      font-size: 50px;
+    }
+
+    .controls {
+      margin-bottom: 50px;
+    }
+
+    input {
+      width: 100px;
+    }
+    input[type=range] {
+      background: coral;
+    }
+  </style>
+  <script>
+    // Declare & define variable reference to all inputs inside the 'control' class
+    const inputs = document.querySelectorAll('.controls input');
+    console.log(inputs);
+
+    function handleUpdate() {
+      const suffix = this.dataset.sizing || '';
+      console.log(this.name, this.value, suffix);
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+    }
+    /* returns `undefined`
+    const handleUpdate = () => {
+      console.log(this.value);
+    } */
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+
+    /* Solution from https://github.com/nitishdayal/JavaScript30/blob/master/exercises/03%20-%20CSS%20Variables/index.html
+    (()=>{
+      'use strict';
+      // Declare & define variable reference to all inputs inside the 'control' class
+      const inputs = document.querySelectorAll('.controls input');
+      // Event Handler function. Such object destructure much default parameters wow
+      const handleUpdate = ({ target: { name, value, dataset: { sizing: suffix = '' } } }) => {
+        document.documentElement.style.setProperty(`--${name}`, value + suffix)
+      }
+      // Helper function to add/remove event listeners because the standard syntax is long and ugly
+      const listen = (event, element, handler, cb = false, add = true) => (
+        add ?
+          cb ?
+            () => element.addEventListener(event, handler) :
+            element.addEventListener(event, handler) :
+          cb ?
+            () => element.removeEventListener(event, handler) :
+            element.removeEventListener(event, handler)
+      );
+      // Attach event listeners to each input
+      inputs.forEach(inp => {
+        // When input value is changed, call handleUpdate function
+        listen('change', inp, handleUpdate)
+        // When a mousedown event occurs on the input, attach *another* event listener to the input.
+        // This new event listener will listen for 'mousemove' event, and call on the
+        // handleUpdate function.
+        listen('mousedown', inp, listen('mousemove', inp, handleUpdate, true))
+        // When a mouseup event occurs on the input, remove the event listener for the 'mousemove'
+        // event (if one exists) that uses the `handleUpdate` function for the event handler.
+        listen('mouseup', inp, listen('mousemove', inp, handleUpdate, true, false))
+      });
+    })();
+    */
+  </script>
+
+</body>
+</html>
