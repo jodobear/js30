@@ -19,11 +19,49 @@ const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb
 
 const cities = [];
 
+// fetch(endpoint).then(blob => console.log(blob)); // For information purpose. Check the console.
+
 fetch(endpoint)
   .then(blob => blob.json()) // jsonify raw data
   .then(data => cities.push(...data));
 
-console.log(cities);
+// console.log(cities);
+
+function findMatches(query, db) {
+  return db.filter(items => {
+    const re = new RegExp(query, 'gi');
+    return items.city.match(re) || items.state.match(re);
+  });
+}
+// console.log(findMatches('bos', cities));  // this outputs empty array but in browser console, it gives correct array.
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function displayMatches() {
+  const matchesArray = findMatches(this.value, cities);
+  const html = matchesArray.map(place => {
+    const re = new RegExp(this.value, 'gi');
+    const cityHl = place.city.replace(re, `<span class="hl">${this.value}</span>`);
+    const stateHl = place.state.replace(re, `<span class="hl">${this.value}</span>`);
+    return `
+      <li>
+        <span class="name">${cityHl}, ${stateHl}</span>
+        <span class="population">${numberWithCommas(place.population)}</span>
+      </li>
+    `;
+  }).join('');
+  suggestions.innerHTML = html;
+}
+
+const queryInput = document.querySelector('.search');
+const suggestions = document.querySelector('.suggestions');
+
+queryInput.addEventListener('change', displayMatches);
+queryInput.addEventListener('keyup', displayMatches);
+
+
 
 </script>
 </body>
